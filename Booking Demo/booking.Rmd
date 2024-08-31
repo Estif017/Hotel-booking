@@ -1,0 +1,94 @@
+## Step 1: Install packages
+
+```{r install packages}
+install.packages("tidyverse")
+install.packages("skimr")
+install.packages("janitor")
+```
+
+Load the packages using the library() function:
+
+```{r load packages}
+library(tidyverse)
+library(skimr)
+library(janitor)
+```
+
+## Step 2: Import data
+
+```{r load dataset}
+hotel_bookings <- read_csv("hotel_bookings.csv")
+```
+
+## Step 3: Explore the data
+
+Preview the first few rows of the dataset:
+
+```{r head function}
+head(hotel_bookings)
+```
+
+Get an overview of the data structure:
+
+```{r str function}
+str(hotel_bookings)
+```
+
+`glimpse()`: Similar to str(), but gives a more compact view of the data.
+
+```{r glimpse function}
+glimpse(hotel_bookings)
+```
+
+```{r colnames function}
+colnames(hotel_bookings)
+```
+
+##Step 4: Manipulate the Data Create a new dataframe sorted by the highest lead_time:
+
+```{r new dataframe}
+hotel_bookings_v2 <-
+  arrange(hotel_bookings, desc(lead_time))
+head(hotel_bookings_v2)
+```
+
+We can also find out the maximum, minimum and mean lead times without sorting the whole data set using the `arrange()` function:
+
+```{r}
+max(hotel_bookings$lead_time)
+min(hotel_bookings$lead_time)
+mean(hotel_bookings$lead_time)
+```
+
+## Step 5: Filter the Data
+
+Filter for city hotels:
+
+```{r filter}
+hotel_bookings_city <- 
+  filter(hotel_bookings, hotel_bookings$hotel=="City Hotel")
+head(hotel_bookings_city)
+```
+
+Check the average lead time for city hotels:
+
+```{r average lead time city hotels}
+mean(hotel_bookings_city$lead_time)
+```
+
+##Step 6: Group and Summarize Data Summarize the data by hotel type
+
+```{r group and summarize}
+hotel_summary <- 
+  hotel_bookings %>%
+  group_by(hotel) %>%
+  summarise(average_lead_time=mean(lead_time),
+            min_lead_time=min(lead_time),
+            max_lead_time=max(lead_time))
+```
+
+Preview the summarized data:
+
+```{r}
+head(hotel_summary)
+```
